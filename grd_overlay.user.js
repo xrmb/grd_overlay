@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         GRD Screen-Switch Overlay
 // @namespace    https://remotedesktop.google.com/
-// @version      1.2
+// @version      1.3
 // @description  Floating screen-switcher overlay for Google Remote Desktop
-// @author       you
+// @author       xrmb
 // @match        https://remotedesktop.google.com/*
 // @run-at       document-idle
 // @updateURL    https://raw.githubusercontent.com/xrmb/grd_overlay/main/grd_overlay.user.js
@@ -221,7 +221,7 @@
     wrap.appendChild(updBtn);
 
     function checkForUpdate() {
-      const current = (typeof GM_info !== 'undefined' && GM_info.script.version) || '1.2';
+      const current = (typeof GM_info !== 'undefined' && GM_info.script.version) || '1.3';
       GM_xmlhttpRequest({
         method: 'GET',
         url: GITHUB_RAW,
