@@ -1,0 +1,5 @@
+# HAR files contain sensitive session data (cookies, tokens)
+*.har
+
+# Captured GRD JS bundles (dev tool output, not source)
+grd_js/
