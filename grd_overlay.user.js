@@ -135,12 +135,14 @@
       const realTabs = getRealTabs();
 
       if (realTabs.length === 0) {
+        allBtn.style.display = 'none';
         const hint = document.createElement('span');
         Object.assign(hint.style, { opacity:'0.5', fontSize:'11px', padding:'0 4px' });
         hint.textContent = 'waiting…';
         tabArea.appendChild(hint);
         return;
       }
+      allBtn.style.display = '';
 
       realTabs.forEach((real, i) => {
         const rawLabel = (real.getAttribute('aria-label') || real.textContent || '').trim();
@@ -177,6 +179,7 @@
       }
       flash(b);
     });
+    allBtn.style.display = 'none';
     wrap.appendChild(allBtn);
     wrap.appendChild(tabArea);
 
