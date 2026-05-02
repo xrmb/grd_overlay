@@ -2,7 +2,11 @@
 
 A floating screen-switcher overlay for [Google Remote Desktop](https://remotedesktop.google.com/), installable as a Tampermonkey or Violentmonkey userscript.
 
-![overlay buttons: ⛶ All Display 1 Display 2 … ✕]
+![GRD Screen-Switch Overlay](screenshot.png)
+
+## Why does this exist?
+
+Google Remote Desktop's built-in screen switcher is buried in a side panel that **disappears in fullscreen mode** — the only mode worth using for a remote desktop session. There's no keyboard shortcut and no persistent UI to jump between displays. This overlay fixes that: a small draggable pill that stays visible at all times, giving you one-click access to every connected display and a fullscreen toggle, without ever leaving the session.
 
 ## Features
 
