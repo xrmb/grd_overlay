@@ -1,16 +1,31 @@
 // ==UserScript==
 // @name         GRD Screen-Switch Overlay
 // @namespace    https://remotedesktop.google.com/
-// @version      1.1
+// @version      1.2
 // @description  Floating screen-switcher overlay for Google Remote Desktop
 // @author       you
 // @match        https://remotedesktop.google.com/*
 // @run-at       document-idle
-// @grant        none
+// @updateURL    https://raw.githubusercontent.com/xrmb/grd_overlay/main/grd_overlay.user.js
+// @downloadURL  https://raw.githubusercontent.com/xrmb/grd_overlay/main/grd_overlay.user.js
+// @grant        GM_xmlhttpRequest
+// @grant        GM_info
+// @connect      raw.githubusercontent.com
 // ==/UserScript==
 
 (function () {
   'use strict';
+
+  const GITHUB_RAW = 'https://raw.githubusercontent.com/xrmb/grd_overlay/main/grd_overlay.user.js';
+
+  function isNewer(a, b) {
+    const pa = a.split('.').map(Number), pb = b.split('.').map(Number);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      const d = (pa[i] || 0) - (pb[i] || 0);
+      if (d !== 0) return d > 0;
+    }
+    return false;
+  }
 
   // ── Dev flag — set true to show a button that downloads the live JS bundles ─
   // Useful for checking if GRD has changed action names or DOM selectors.
@@ -196,6 +211,34 @@
       wrap.appendChild(dlBtn);
     }
 
+    // Update indicator (hidden until checkForUpdate finds a newer version)
+    const updBtn = mkBtn('', 'Check…', () => window.open(GITHUB_RAW, '_blank'));
+    Object.assign(updBtn.style, {
+      display: 'none',
+      background: 'rgba(255,180,0,0.25)',
+      borderColor: 'rgba(255,180,0,0.6)',
+    });
+    wrap.appendChild(updBtn);
+
+    function checkForUpdate() {
+      const current = (typeof GM_info !== 'undefined' && GM_info.script.version) || '1.2';
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url: GITHUB_RAW,
+        onload(res) {
+          const m = res.responseText.match(/@version\s+(\S+)/);
+          if (!m) return;
+          const latest = m[1];
+          if (isNewer(latest, current)) {
+            updBtn.textContent = `↑ v${latest}`;
+            updBtn.title = `Update available (v${latest}) — click to install`;
+            updBtn.style.display = '';
+          }
+        },
+        onerror() {},
+      });
+    }
+
     // Close button
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '✕';
@@ -246,6 +289,7 @@
 
     document.body.appendChild(wrap);
     buildTabs();
+    checkForUpdate();
   }
 
   let attempts = 0;
